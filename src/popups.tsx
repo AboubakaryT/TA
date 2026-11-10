@@ -185,7 +185,9 @@ function ProjectWindow({
         <div className="pop-m-bar" style={cut(p, 0, 0, W, GALLERY.bar)} {...dragProps}>
           {closeBtn}
         </div>
-        <div style={cut(p, L.x, L.y, L.w, L.h)} />
+        <div className="pop-m-head" style={{ aspectRatio: `${L.w} / ${Math.round((L.h - 14) * 0.93)}` }}>
+          <div style={cut(p, L.x, L.y + 14, L.w, L.h - 14)} />
+        </div>
         <div className="pop-m-row">
           {[0, 1, 2].map((i) => (
             <Slot key={i} p={p} src={imgs[from + i]} onZoom={onZoom} />

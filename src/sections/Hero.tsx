@@ -7,8 +7,8 @@ export default function Hero() {
     <Section id="top" width={10988} height={7009} top={266} bg="/assets/home-bg-3.webp">
       <Box l={10080} t={520} w={320} h={118} bg="#f3f3f3" />
       {/* cream patches hide the old orange blob, tape and buttons baked into the export */}
-      <Box l={200} t={1085} w={1150} h={2150} bg="#fff7f1" />
-      <Box l={1000} t={2990} w={4700} h={960} bg="#fff7f1" />
+      <Box l={200} t={1085} w={1150} h={1950} bg="#fff7f1" />
+      <Box l={200} t={2900} w={820} h={420} bg="#fff7f1" />
       <Box l={700} t={4820} w={3700} h={500} bg="#fff7f1" />
 
       <Txt as="div" l={1086} t={1120} size={800} className="fr fr-black-italic lines nowrap">
@@ -16,10 +16,7 @@ export default function Hero() {
         <p>Tashawna!</p>
       </Txt>
 
-      <Box l={1250} t={3040} w={3100} h={70} r={50} bg="#c7a3e6" style={{ transform: 'rotate(-0.8deg)' }} />
-
-      <Box l={1030} t={3290} w={3120} h={620} bg="#d9bff0" style={{ borderRadius: '48% 52% 50% 50% / 60% 55% 45% 40%' }} />
-      <Txt l={1330} t={3340} size={370} className="fr fr-italic nowrap">
+      <Txt l={1250} t={3200} size={370} className="fr fr-italic nowrap" style={{ transform: "rotate(-2.5deg)", transformOrigin: "left center" }}>
         Graphic Designer
       </Txt>
 

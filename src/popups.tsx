@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent, ReactNode } from 'react'
-import { GALLERY, PERSONAL, PROJECTS } from './projects'
+import { CAPTIONS, GALLERY, PERSONAL, PROJECTS } from './projects'
 import type { Project, ProjectId } from './projects'
 import { useIsMobile } from './useIsMobile'
 
@@ -10,6 +10,36 @@ const PopupsContext = createContext<{ open: (id: ProjectId) => void }>({ open: (
 export const usePopups = () => useContext(PopupsContext)
 
 const popWidth = (id?: ProjectId) => Math.min(window.innerWidth * 0.94, id === 'personal' ? 640 : 1000)
+
+/** Scales a photo toward a shared on-screen area so tall and wide posters feel the same size. */
+function LightboxImg({ src, alt }: { src: string; alt: string }) {
+  const [nat, setNat] = useState<[number, number] | null>(null)
+  const [vp, setVp] = useState<[number, number]>([window.innerWidth, window.innerHeight])
+  useEffect(() => {
+    const r = () => setVp([window.innerWidth, window.innerHeight])
+    window.addEventListener('resize', r)
+    return () => window.removeEventListener('resize', r)
+  }, [])
+  let style: CSSProperties = { visibility: 'hidden' }
+  if (nat) {
+    const [vw, vh] = vp
+    const desktop = vw > 760
+    const boxW = desktop ? vw * 0.92 - 360 : vw * 0.9
+    const boxH = desktop ? vh * 0.82 : vh * 0.56
+    const area = desktop ? vw * vh * 0.34 : vw * vh * 0.22
+    const s = Math.min(Math.sqrt(area / (nat[0] * nat[1])), boxW / nat[0], boxH / nat[1])
+    style = { width: Math.round(nat[0] * s), height: Math.round(nat[1] * s) }
+  }
+  return (
+    <img
+      src={src}
+      alt={alt}
+      draggable={false}
+      style={style}
+      onLoad={(e) => setNat([e.currentTarget.naturalWidth, e.currentTarget.naturalHeight])}
+    />
+  )
+}
 
 export function PopupsProvider({ children }: { children: ReactNode }) {
   const [wins, setWins] = useState<Win[]>([])
@@ -55,7 +85,16 @@ export function PopupsProvider({ children }: { children: ReactNode }) {
       ))}
       {zoom && (
         <div className="lightbox" onClick={() => setZoom(null)} role="dialog" aria-label="Image preview">
-          <img src={zoom} alt="" onClick={(e) => e.stopPropagation()} draggable={false} />
+          <figure className="lb-fig" onClick={(e) => e.stopPropagation()}>
+            <LightboxImg key={zoom} src={zoom} alt={CAPTIONS[zoom]?.title ?? ''} />
+            {CAPTIONS[zoom] && (
+              <figcaption className="lb-cap">
+                <span className="lb-tag dm dm-bold">✦ {CAPTIONS[zoom].tag}</span>
+                <b className="fr fr-italic lb-title">{CAPTIONS[zoom].title}</b>
+                <span className="dm dm-regular lb-text">{CAPTIONS[zoom].text}</span>
+              </figcaption>
+            )}
+          </figure>
         </div>
       )}
     </PopupsContext.Provider>

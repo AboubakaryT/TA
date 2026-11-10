@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { TABS, useTabs } from '../tabs'
 import type { TabId } from '../tabs'
@@ -40,10 +41,15 @@ const Icon = ({ id }: { id: TabId }) => {
 
 export function Deck({ children }: { children: ReactNode }) {
   const { active, go } = useTabs()
+  const [intro, setIntro] = useState(true)
+  useEffect(() => {
+    const t = setTimeout(() => setIntro(false), 1800)
+    return () => clearTimeout(t)
+  }, [])
   // front = active tab, the rest keep their original order behind it
   const order = [active, ...TABS.map((t) => t.id).filter((id) => id !== active)]
   return (
-    <div className="deck">
+    <div className={`deck${intro ? ' intro' : ''}`}>
       <div className="deck-inner" style={{ paddingTop: `${BODY_TOP[0]}cqw` }}>
         {TABS.map((tab) => {
           const d = order.indexOf(tab.id)
@@ -51,7 +57,7 @@ export function Deck({ children }: { children: ReactNode }) {
           const left = isFront ? (INSET[tab.id] ?? 0) : LEFT[d]
           return (
             <div key={tab.id}>
-              {!isFront && (
+              {(
                 <div
                   className="layer"
                   onClick={() => go(tab.id)}
@@ -61,6 +67,8 @@ export function Deck({ children }: { children: ReactNode }) {
                     top: `${BODY_TOP[d]}cqw`,
                     background: tab.color,
                     zIndex: 10 - d,
+                    opacity: isFront ? 0 : 1,
+                    pointerEvents: isFront ? 'none' : 'auto',
                     ['--i' as string]: d,
                   }}
                 />

@@ -197,7 +197,7 @@ a {
   height: 22cqw;
   border-radius: 0 1.8cqw 0 0;
   cursor: pointer;
-  transition: left 0.35s ease, top 0.35s ease, width 0.35s ease, background 0.35s ease;
+  transition: left 0.35s ease, top 0.35s ease, width 0.35s ease, opacity 0.35s ease;
 }
 
 .ear {
@@ -320,9 +320,9 @@ html, body, *, *::before, *::after {
 @keyframes nav-in { from { opacity: 0; transform: translateY(-24px); } to { opacity: 1; transform: none; } }
 @keyframes win-in { from { opacity: 0; transform: translateY(40px) scale(0.985); } to { opacity: 1; transform: none; } }
 @keyframes m-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-.ear, .layer { animation: tab-in 0.75s cubic-bezier(0.2, 0.9, 0.25, 1) both; animation-delay: calc(0.25s + (3 - var(--i, 0)) * 0.11s); }
+.intro .ear, .intro .layer { animation: tab-in 0.75s cubic-bezier(0.2, 0.9, 0.25, 1) both; animation-delay: calc(0.25s + (3 - var(--i, 0)) * 0.11s); }
 .nav { animation: nav-in 0.6s cubic-bezier(0.2, 0.9, 0.25, 1) both; }
-.page-slot { animation: win-in 0.7s cubic-bezier(0.2, 0.9, 0.25, 1) both; }
+.intro .page-slot { animation: win-in 0.7s cubic-bezier(0.2, 0.9, 0.25, 1) both; }
 .m-nav { animation: nav-in 0.5s ease both; }
 .m-tabs button { animation: m-in 0.5s ease both; }
 .m-tabs button:nth-child(2) { animation-delay: 0.07s; }

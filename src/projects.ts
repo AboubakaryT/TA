@@ -14,7 +14,7 @@ export type Project = {
 
 const ALFA = ['amy-putman-banner', 'brian-keeler-banner', 'brian-keeler', 'ritu-bajaj', 'keith-vogrin', 'image'].map((n) => `/projects/alfa/${n}-c.jpg`)
 
-const UB = ['acm-website.jpg', 'fall-gbm.jpg', 'resume-roast-fixed.webp', 'resume-roast.jpg'].map((n) => `/projects/ub/${n}`)
+const UB = ['acm-website.jpg', 'fall-gbm.jpg', 'gbm-slides.jpg', 'swe-panel.webp', 'resume-roast-fixed.webp', 'resume-roast.jpg'].map((n) => `/projects/ub/${n}`)
 
 export const PROJECTS: Record<ProjectId, Project> = {
   alfa: { id: 'alfa', title: 'Alfa Art Gallery', frame: '/assets/frame-alfa.webp', size: [8000, 2859], images: ALFA, slotColor: '#ead7f6', gallery: true },

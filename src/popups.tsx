@@ -76,11 +76,18 @@ function cut(p: Project, x: number, y: number, w: number, h: number): CSSPropert
 }
 
 function Slot({ p, src, style, onZoom }: { p: Project; src?: string; style?: CSSProperties; onZoom: (s: string) => void }) {
+  const [wide, setWide] = useState(false)
   return (
     <div className="pop-slot" style={{ background: p.slotColor, ...style }}>
       {src && (
         <button type="button" className="pop-photo" aria-label="View larger" onClick={() => onZoom(src)}>
-          <img src={src} alt="" draggable={false} />
+          <img
+            src={src}
+            alt=""
+            draggable={false}
+            className={wide ? 'fit' : undefined}
+            onLoad={(e) => setWide(e.currentTarget.naturalWidth / e.currentTarget.naturalHeight > 1.3)}
+          />
         </button>
       )}
     </div>

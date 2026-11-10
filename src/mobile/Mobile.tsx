@@ -37,7 +37,7 @@ function Hero() {
     <>
       <h1 className="m-h1 fr fr-black-italic">
         Hi, I’m<br />
-        <span className="m-ul">Tashawna!</span>
+        Tashawna!
       </h1>
       <p className="m-hl fr fr-italic">Graphic Designer</p>
       <p className="m-p dm dm-regular">

@@ -18,7 +18,7 @@ const UB = ['acm-website.jpg', 'fall-gbm.jpg', 'resume-roast-fixed.webp', 'resum
 
 export const PROJECTS: Record<ProjectId, Project> = {
   alfa: { id: 'alfa', title: 'Alfa Art Gallery', frame: '/assets/frame-alfa.webp', size: [8000, 2859], images: ALFA, slotColor: '#ead7f6', gallery: true },
-  ub: { id: 'ub', title: 'UB ACM', frame: '/assets/frame-ub.webp', size: [8000, 2859], images: UB, slotColor: '#cddcf8', gallery: true },
+  ub: { id: 'ub', title: 'UB ACM', frame: '/assets/frame-ub-2.webp', size: [8000, 2859], images: UB, slotColor: '#cddcf8', gallery: true },
   personal: { id: 'personal', title: 'Personal Projects', frame: '/assets/frame-personal.webp', size: [3573, 2129], images: [], slotColor: '#ead7f6', gallery: false },
 }
 

@@ -12,7 +12,7 @@ export type Project = {
   gallery: boolean
 }
 
-const ALFA = ['amy-putman-banner', 'brian-keeler-banner', 'brian-keeler', 'ritu-bajaj', 'keith-vogrin', 'image'].map((n) => `/projects/alfa/${n}.jpg`)
+const ALFA = ['amy-putman-banner', 'brian-keeler-banner', 'brian-keeler', 'ritu-bajaj', 'keith-vogrin', 'image'].map((n) => `/projects/alfa/${n}-c.jpg`)
 
 const UB = ['acm-website.jpg', 'fall-gbm.jpg', 'resume-roast-fixed.webp', 'resume-roast.jpg'].map((n) => `/projects/ub/${n}`)
 

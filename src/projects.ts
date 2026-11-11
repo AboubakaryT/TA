@@ -14,7 +14,7 @@ export type Project = {
 
 const ALFA = ['amy-putman-banner', 'brian-keeler-banner', 'brian-keeler', 'ritu-bajaj', 'keith-vogrin', 'image'].map((n) => `/projects/alfa/${n}-c.jpg`)
 
-const UB = ['acm-website.jpg', 'fall-gbm.jpg', 'gbm-slides.jpg', 'swe-panel.webp', 'resume-roast-fixed.webp', 'resume-roast.jpg'].map((n) => `/projects/ub/${n}`)
+const UB = ['fall-gbm.jpg', 'swe-panel.webp', 'resume-roast.jpg', 'gbm-slides.jpg'].map((n) => `/projects/ub/${n}`)
 
 export const PROJECTS: Record<ProjectId, Project> = {
   alfa: { id: 'alfa', title: 'Alfa Art Gallery', frame: '/assets/frame-alfa.webp', size: [8000, 2859], images: ALFA, slotColor: '#ead7f6', gallery: true },
@@ -43,10 +43,16 @@ export const CAPTIONS: Record<string, Caption> = {
   '/projects/alfa/ritu-bajaj-c.jpg': { title: 'Ritu Bajaj, featured artist', text: 'Tulips on a deep black background, with fine linework that makes them look like they’re floating.', tag: 'artist poster' },
   '/projects/alfa/keith-vogrin-c.jpg': { title: 'Meet the Artist: Keith Vogrin', text: 'A thumbnail for an artist interview and Q&A, with the painting peeking out behind the text.', tag: 'social thumbnail' },
   '/projects/alfa/image-c.jpg': { title: 'Meet the Artist, story edition', text: 'The same artist-talk announcement, restyled tall for stories so it fits in your thumb’s reach.', tag: 'story graphic' },
-  '/projects/ub/acm-website.jpg': { title: 'Fall GBM', text: 'A retro-computer-window look for UB ACM’s first meeting of the semester, with a cheeky cursor pointing at the snacks.', tag: 'square post' },
   '/projects/ub/fall-gbm.jpg': { title: 'Fall GBM, story edition', text: 'The same retro desktop, stretched tall for stories, with the where, when and snacks stacked in cute little cards.', tag: 'story graphic' },
   '/projects/ub/gbm-slides.jpg': { title: 'Fall GBM slide deck', text: 'Every slide from the meeting, from the welcome screen to game night, all dressed up as little desktop windows.', tag: 'presentation' },
   '/projects/ub/swe-panel.webp': { title: 'Software Engineer Panel', text: 'A line-up of alumni and student interns from big tech, each with their company logo tucked beside them.', tag: 'event poster' },
-  '/projects/ub/resume-roast-fixed.webp': { title: 'CSE Resume Roast', text: 'Bring your resume, get gentle feedback. A cloudy blue gradient keeps the roast friendly.', tag: 'event flyer' },
   '/projects/ub/resume-roast.jpg': { title: 'CSE Resume Roast', text: 'The original square flyer for the evening of resume advice, live demos and 1:1 reviews.', tag: 'event flyer' },
+}
+
+/** Instagram profile and per-post numbers for the UB ACM gallery (edit the numbers here). */
+export const IG = { url: 'https://www.instagram.com/ubacm/', handle: '@ubacm' }
+export const STATS: Record<string, { views: string; likes?: string }> = {
+  '/projects/ub/fall-gbm.jpg': { views: '7,157' },
+  '/projects/ub/swe-panel.webp': { views: '7,635' },
+  '/projects/ub/resume-roast.jpg': { views: '6,306' },
 }

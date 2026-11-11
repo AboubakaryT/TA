@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent, ReactNode } from 'react'
-import { CAPTIONS, GALLERY, PERSONAL, PROJECTS } from './projects'
+import { CAPTIONS, GALLERY, IG, PERSONAL, PROJECTS, STATS } from './projects'
 import type { Project, ProjectId } from './projects'
 import { useIsMobile } from './useIsMobile'
 
@@ -114,20 +114,63 @@ function cut(p: Project, x: number, y: number, w: number, h: number): CSSPropert
   }
 }
 
+const Eye = () => (
+  <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" />
+  </svg>
+)
+const Heart = () => (
+  <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+    <path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3 4.8 6.4 4.8c2 0 3.7 1.1 5.6 3.2 1.9-2.1 3.6-3.2 5.6-3.2 3.4 0 5.5 3.4 4 6.9C19.5 16.4 12 21 12 21Z" />
+  </svg>
+)
+const InstaLogo = () => (
+  <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+    <rect x="3" y="3" width="18" height="18" rx="5.5" /><circle cx="12" cy="12" r="4.2" /><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" />
+  </svg>
+)
+
+function InstaLink({ className, style }: { className?: string; style?: CSSProperties }) {
+  return (
+    <a className={`pop-ig ${className ?? ''}`} style={style} href={IG.url} target="_blank" rel="noopener noreferrer" aria-label="UB ACM on Instagram">
+      <InstaLogo />
+      <b className="dm dm-bold">{IG.handle}</b>
+      <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M7 17 17 7M8 7h9v9" />
+      </svg>
+    </a>
+  )
+}
+
 function Slot({ p, src, style, onZoom }: { p: Project; src?: string; style?: CSSProperties; onZoom: (s: string) => void }) {
   const [wide, setWide] = useState(false)
+  const stat = src ? STATS[src] : undefined
+  const zoomable = true
+  const img = src && (
+    <img
+      src={src}
+      alt=""
+      draggable={false}
+      className={wide || p.id === 'ub' ? 'fit' : undefined}
+      onLoad={(e) => setWide(e.currentTarget.naturalWidth / e.currentTarget.naturalHeight > 1.3)}
+    />
+  )
   return (
-    <div className="pop-slot" style={{ background: p.slotColor, ...style }}>
-      {src && (
-        <button type="button" className="pop-photo" aria-label="View larger" onClick={() => onZoom(src)}>
-          <img
-            src={src}
-            alt=""
-            draggable={false}
-            className={wide ? 'fit' : undefined}
-            onLoad={(e) => setWide(e.currentTarget.naturalWidth / e.currentTarget.naturalHeight > 1.3)}
-          />
-        </button>
+    <div className={`pop-slot${stat ? ' has-stat' : ''}`} style={{ background: p.slotColor, ...style }}>
+      {src &&
+        (zoomable ? (
+          <button type="button" className="pop-photo" aria-label="View larger" onClick={() => onZoom(src)}>
+            {img}
+          </button>
+        ) : (
+          <div className="pop-photo">{img}</div>
+        ))}
+      {stat && (
+        <div className="pop-stat dm dm-semibold">
+          <span><Eye /> {stat.views} views</span>
+          {stat.likes && <span><Heart /> {stat.likes} likes</span>}
+          <i><InstaLogo /></i>
+        </div>
       )}
     </div>
   )
@@ -188,6 +231,7 @@ function ProjectWindow({
         <div className="pop-m-head" style={{ aspectRatio: `${L.w} / ${Math.round((L.h - 14) * 0.93)}` }}>
           <div style={cut(p, L.x, L.y + 14, L.w, L.h - 14)} />
         </div>
+        {p.id === 'ub' && <InstaLink className="pop-ig-m" />}
         <div className="pop-m-row">
           {[0, 1, 2].map((i) => (
             <Slot key={i} p={p} src={imgs[from + i]} onZoom={onZoom} />
@@ -216,6 +260,7 @@ function ProjectWindow({
       {closeBtn}
       {p.gallery && (
         <>
+          {p.id === 'ub' && <InstaLink style={{ left: pct(240, W), top: pct(2480, H), width: pct(2120, W), height: pct(270, H) }} />}
           {GALLERY.slots.map((s, i) => (
             <Slot key={i} p={p} src={imgs[from + i]} onZoom={onZoom} style={{ left: pct(s.x, W), top: pct(s.y, H), width: pct(s.w, W), height: pct(s.h, H) }} />
           ))}

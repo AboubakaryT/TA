@@ -347,3 +347,21 @@ html, body, *, *::before, *::after {
 .m-tabs button:nth-child(3) { animation-delay: 0.14s; }
 .m-tabs button:nth-child(4) { animation-delay: 0.21s; }
 @media (prefers-reduced-motion: reduce) { .ear, .layer, .nav, .page-slot, .m-nav, .m-tabs button { animation: none; } }
+
+/* UB ACM: instagram link + post stats */
+.pop { container-type: inline-size; }
+.pop-photo { box-sizing: border-box; }
+.pop-slot.has-stat { display: flex; flex-direction: column; }
+.pop-slot.has-stat .pop-photo { flex: 1; min-height: 0; height: auto; }
+.pop-slot .pop-photo:not(button) { display: block; }
+.pop-stat { flex: none; display: flex; align-items: center; gap: 1.2cqw; padding: 0 1.1cqw; height: 15%; background: #4a5ab0; color: #fff; font-size: 1.05cqw; white-space: nowrap; }
+.pop-stat span { display: inline-flex; align-items: center; gap: 0.6em; }
+.pop-stat i { margin-left: auto; display: inline-flex; font-size: 1.5cqw; }
+.pop-ig { position: absolute; display: flex; align-items: center; gap: 0.7em; box-sizing: border-box; padding: 0 1.2cqw; font-size: 1.7cqw; color: #1444b3; background: #d9e5fb; border: 0.25cqw solid #1444b3; border-radius: 1.4cqw; text-decoration: none; }
+.pop-ig b { flex: 1; font-weight: 700; }
+.pop-ig:hover { background: #c8d9fa; }
+.pop-ig svg:first-child { font-size: 1.15em; }
+.pop-ig-m { position: static; margin: 0 16px 6px; padding: 10px 14px; font-size: 17px; }
+.pop-m-row .pop-slot.has-stat { background: #cddcf8 !important; border-radius: 10px; overflow: hidden; }
+.pop-m-row .pop-stat { height: auto; padding: 8px 12px; font-size: 13px; gap: 14px; }
+.pop-m-row .pop-stat i { font-size: 18px; }

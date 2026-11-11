@@ -12,14 +12,14 @@ export type Project = {
   gallery: boolean
 }
 
-const ALFA = ['amy-putman-banner', 'brian-keeler-banner', 'brian-keeler', 'ritu-bajaj', 'keith-vogrin', 'image'].map((n) => `/projects/alfa/${n}-c.jpg`)
+const ALFA = ['amy-putman-banner', 'brian-keeler-banner', 'keith-vogrin', 'image', 'brian-keeler'].map((n) => `/projects/alfa/${n}-c.jpg`)
 
 const UB = ['fall-gbm.jpg', 'swe-panel.webp', 'resume-roast.jpg', 'gbm-slides.jpg'].map((n) => `/projects/ub/${n}`)
 
 export const PROJECTS: Record<ProjectId, Project> = {
   alfa: { id: 'alfa', title: 'Alfa Art Gallery', frame: '/assets/frame-alfa.webp', size: [8000, 2859], images: ALFA, slotColor: '#ead7f6', gallery: true },
   ub: { id: 'ub', title: 'UB ACM', frame: '/assets/frame-ub-2.webp', size: [8000, 2859], images: UB, slotColor: '#cddcf8', gallery: true },
-  personal: { id: 'personal', title: 'Personal Projects', frame: '/assets/frame-personal.webp', size: [3573, 2129], images: [], slotColor: '#ead7f6', gallery: false },
+  personal: { id: 'personal', title: 'Personal Projects', frame: '/assets/frame-personal-2.webp', size: [8000, 2859], images: ['/projects/personal/portfolio-figma-w.webp'], slotColor: '#fff7f1', gallery: true },
 }
 
 /** Layout of the gallery frames, in the frame's own pixels (8000 x 2859). */
@@ -31,16 +31,18 @@ export const GALLERY = {
   bar: 400,
   left: { x: 0, y: 400, w: 2600, h: 2459 },
 }
+/** Personal Projects shows its photos in one wide slot spanning the three gallery slots. */
+export const PERSONAL_SLOTS = [{ x: 2860, y: 698, w: 4864, h: 1772 }]
 export const PERSONAL = { close: { x: 3358, y: 120 }, bar: 230 }
 
 export type Caption = { title: string; text: string; tag: string }
 
 /** Cute captions shown under an enlarged photo, keyed by image path. */
 export const CAPTIONS: Record<string, Caption> = {
+  '/projects/personal/portfolio-figma-w.webp': { title: 'This portfolio, in Figma', text: 'Home, Work, About and Contact as folder-tab windows, plus the project popups, all designed in Figma before they became this site.', tag: 'web design' },
   '/projects/alfa/amy-putman-banner-c.jpg': { title: 'Pigmented Perceptions', text: 'A moody, dark banner for the gallery’s group exhibition, built to make the artwork glow.', tag: 'exhibition banner' },
   '/projects/alfa/brian-keeler-banner-c.jpg': { title: 'Pigmented Perceptions, but make it bright', text: 'The light version of the exhibition banner: a featured painting, sponsor logos and every opening date in one tidy spread.', tag: 'exhibition banner' },
   '/projects/alfa/brian-keeler-c.jpg': { title: 'Brian Keeler, featured artist', text: 'A poster that lets one painting take center stage, with pastel blocks holding all the event details.', tag: 'artist poster' },
-  '/projects/alfa/ritu-bajaj-c.jpg': { title: 'Ritu Bajaj, featured artist', text: 'Tulips on a deep black background, with fine linework that makes them look like they’re floating.', tag: 'artist poster' },
   '/projects/alfa/keith-vogrin-c.jpg': { title: 'Meet the Artist: Keith Vogrin', text: 'A thumbnail for an artist interview and Q&A, with the painting peeking out behind the text.', tag: 'social thumbnail' },
   '/projects/alfa/image-c.jpg': { title: 'Meet the Artist, story edition', text: 'The same artist-talk announcement, restyled tall for stories so it fits in your thumb’s reach.', tag: 'story graphic' },
   '/projects/ub/fall-gbm.jpg': { title: 'Fall GBM, story edition', text: 'The same retro desktop, stretched tall for stories, with the where, when and snacks stacked in cute little cards.', tag: 'story graphic' },

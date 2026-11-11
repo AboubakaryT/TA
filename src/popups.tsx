@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent, ReactNode } from 'react'
-import { CAPTIONS, GALLERY, IG, PERSONAL, PROJECTS, STATS } from './projects'
+import { CAPTIONS, GALLERY, IG, PERSONAL_SLOTS, PROJECTS, STATS } from './projects'
 import type { Project, ProjectId } from './projects'
 import { useIsMobile } from './useIsMobile'
 
@@ -9,7 +9,7 @@ type Win = { id: ProjectId; x: number; y: number; z: number }
 const PopupsContext = createContext<{ open: (id: ProjectId) => void }>({ open: () => {} })
 export const usePopups = () => useContext(PopupsContext)
 
-const popWidth = (id?: ProjectId) => Math.min(window.innerWidth * 0.94, id === 'personal' ? 640 : 1000)
+const popWidth = () => Math.min(window.innerWidth * 0.94, 1000)
 
 /** Scales a photo toward a shared on-screen area so tall and wide posters feel the same size. */
 function LightboxImg({ src, alt }: { src: string; alt: string }) {
@@ -62,7 +62,7 @@ export function PopupsProvider({ children }: { children: ReactNode }) {
         ...w,
         {
           id,
-          x: Math.max(6, (window.innerWidth - popWidth(id)) / 2 + n * 30),
+          x: Math.max(6, (window.innerWidth - popWidth()) / 2 + n * 30),
           y: Math.max(10, window.innerHeight * 0.16 + n * 30),
           z: zTop.current,
         },
@@ -143,7 +143,6 @@ function InstaLink({ className, style }: { className?: string; style?: CSSProper
 }
 
 function Slot({ p, src, style, onZoom }: { p: Project; src?: string; style?: CSSProperties; onZoom: (s: string) => void }) {
-  const [wide, setWide] = useState(false)
   const stat = src ? STATS[src] : undefined
   const zoomable = true
   const img = src && (
@@ -151,12 +150,11 @@ function Slot({ p, src, style, onZoom }: { p: Project; src?: string; style?: CSS
       src={src}
       alt=""
       draggable={false}
-      className={wide || p.id === 'ub' ? 'fit' : undefined}
-      onLoad={(e) => setWide(e.currentTarget.naturalWidth / e.currentTarget.naturalHeight > 1.3)}
+      className="fit"
     />
   )
   return (
-    <div className={`pop-slot${stat ? ' has-stat' : ''}`} style={{ background: p.slotColor, ...style }}>
+    <div className={`pop-slot${stat ? ' has-stat' : ''}`} style={{ background: stat ? p.slotColor : '#fff7f1', ...style }}>
       {src &&
         (zoomable ? (
           <button type="button" className="pop-photo" aria-label="View larger" onClick={() => onZoom(src)}>
@@ -207,9 +205,12 @@ function ProjectWindow({
   const dragProps = { onPointerDown: down, onPointerMove: moveEv, onPointerUp: () => (drag.current = null), onPointerCancel: () => (drag.current = null) }
 
   const imgs = p.images
-  const step = (d: number) => setFrom((f) => Math.min(Math.max(f + d, 0), Math.max(imgs.length - 3, 0)))
-  const closeAt = p.gallery ? GALLERY.close : PERSONAL.close
-  const barH = p.gallery ? GALLERY.bar : PERSONAL.bar
+  const slots = p.id === 'personal' ? PERSONAL_SLOTS : GALLERY.slots
+  const visible = mobile ? 3 : slots.length
+  const step = (d: number) => setFrom((f) => Math.min(Math.max(f + d, 0), Math.max(imgs.length - visible, 0)))
+  const closeAt = GALLERY.close
+  const barH = GALLERY.bar
+  const canPage = imgs.length > visible
 
   const closeBtn = (
     <button
@@ -233,11 +234,11 @@ function ProjectWindow({
         </div>
         {p.id === 'ub' && <InstaLink className="pop-ig-m" />}
         <div className="pop-m-row">
-          {[0, 1, 2].map((i) => (
+          {[0, 1, 2].filter((i) => imgs[from + i]).map((i) => (
             <Slot key={i} p={p} src={imgs[from + i]} onZoom={onZoom} />
           ))}
         </div>
-        {imgs.length > 3 && (
+        {canPage && (
           <div className="pop-m-nav">
             <button onClick={() => step(-1)} aria-label="Previous">‹</button>
             <button onClick={() => step(1)} aria-label="Next">›</button>
@@ -252,7 +253,7 @@ function ProjectWindow({
       className="pop"
       role="dialog"
       aria-label={p.title}
-      style={{ left: win.x, top: win.y, zIndex: win.z, width: mobile ? 'min(94vw, 560px)' : popWidth(win.id), aspectRatio: `${W} / ${H}` }}
+      style={{ left: win.x, top: win.y, zIndex: win.z, width: mobile ? 'min(94vw, 560px)' : popWidth(), aspectRatio: `${W} / ${H}` }}
       onPointerDown={onFocus}
     >
       <img className="pop-frame" src={p.frame} alt="" draggable={false} />
@@ -261,11 +262,11 @@ function ProjectWindow({
       {p.gallery && (
         <>
           {p.id === 'ub' && <InstaLink style={{ left: pct(240, W), top: pct(2480, H), width: pct(2120, W), height: pct(270, H) }} />}
-          {GALLERY.slots.map((s, i) => (
+          {slots.map((s, i) => (
             <Slot key={i} p={p} src={imgs[from + i]} onZoom={onZoom} style={{ left: pct(s.x, W), top: pct(s.y, H), width: pct(s.w, W), height: pct(s.h, H) }} />
           ))}
-          <button className="pop-arrow" aria-label="Previous" onClick={() => step(-1)} style={{ left: pct(GALLERY.prev.x, W), top: pct(GALLERY.prev.y, H) }} />
-          <button className="pop-arrow" aria-label="Next" onClick={() => step(1)} style={{ left: pct(GALLERY.next.x, W), top: pct(GALLERY.next.y, H) }} />
+          {canPage && <button className="pop-arrow" aria-label="Previous" onClick={() => step(-1)} style={{ left: pct(GALLERY.prev.x, W), top: pct(GALLERY.prev.y, H) }} />}
+          {canPage && <button className="pop-arrow" aria-label="Next" onClick={() => step(1)} style={{ left: pct(GALLERY.next.x, W), top: pct(GALLERY.next.y, H) }} />}
         </>
       )}
     </div>
